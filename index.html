@@ -30,8 +30,11 @@
       <div class="modal-content box has-background-grey-lighter">
         <p class="title">{{ selected.name }}</p>
         <div class="columns">
+
+          <!-- left side -->
           <div class="column is-narrow">
             <img :src="selected.image">
+            <!-- the color palette squares -->
             <div>
               <span
                 v-for="color of selected.colors"
@@ -41,21 +44,28 @@
               </span>
             </div>
           </div>
+          
+          <!-- right side -->
           <div class="column">
+            <!-- just inserts the current data into the modal -->
+            <p><strong>Name:</strong> {{ selected.name }}</p>
             <p><strong>Birthdate:</strong> {{ selected.birth }}</p>
             <p><strong>Info:</strong> {{ selected.info }}</p>
             <hr>
             <p class="subtitle">Charas</p>
             <div class="box">
               <p v-for="chara of selected.charas">{{ chara }}</p>
+              <!-- you can have it insert extra html too -->
               <div v-if="selected.html">
-                <p>Extra HTML</p>
+                <hr>
                 <div v-html="selected.html"></div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
+
       <button
         class="modal-close is-large"
         aria-label="close"
@@ -67,10 +77,12 @@
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.min.js"></script>
   <script>
+  // this is where all the data and functions are stored
   var app = new Vue({
     el: '#app',
     data: {
       selected: null,
+      // list of characters. because it is all data, you can save it to JSON
       characters: [
         {
           name: 'Amu Hinamori',
@@ -82,7 +94,21 @@
           ],
           charas: [
             'Ran', 'Miki', 'Su', 'Dia'
-          ]
+          ],
+          // an example of inserting html
+          html: `
+          <article class="message">
+            <div class="message-header">
+              <p>Hey, look at this random html</p>
+            </div>
+            <div class="message-body">
+              <span class="icon has-text-success">
+                <i class="fas fa-check-square"></i>
+              </span>
+              Why does Amu get it and no one else?
+              <p>Idk, why does she get anything else no one has</p>
+            </div>
+          </article>`
         },
         {
           name: 'Ikuto Tsukiyomi',
@@ -118,7 +144,11 @@
           ],
           charas: [
             'Kusukusu'
-          ]
+          ],
+          html: `
+          <p>Guess i lied about only Amu having html...</p>
+          <p>Have a KusuKusu image.</p>
+          <img src="kusukusu.webp">`
         },
         {
           name: 'Kukai Soma',
@@ -132,21 +162,25 @@
             'Daichi'
           ]
         },
+        // if the character is 'locked', they won't appear on the page
         { name: 'Yaya Yuiki', locked: true },
         { name: 'Nadeshiko Fujisaki', locked: true },
         { name: 'Kairi Sanjo', locked: true },
       ]
     },
+    // a getter function. just makes things look nicer in the html in this case
     computed: {
       modalActive() {
         return this.selected !== null;
       }
     },
+    // updating the title. you can ignore this
     watch: {
       selected(next) {
         document.title = next ? `Cast - ${next.name}` : 'Shugo Chara Cast'
       }
     },
+    // the functions for opening and closing the modal
     methods: {
       showCharacter(character) {
         this.selected = character;
