@@ -9,7 +9,7 @@
   <style>
     [v-cloak] { display: none; } /* waits until content loads to display */
   </style>
-  <title>Shugo Chara Characters</title>
+  <title>Shugo Chara Cast</title>
 </head>
 
 <body>
@@ -140,6 +140,11 @@
     computed: {
       modalActive() {
         return this.selected !== null;
+      }
+    },
+    watch: {
+      selected(next) {
+        document.title = next ? `Cast - ${next.name}` : 'Shugo Chara Cast'
       }
     },
     methods: {
