@@ -3,40 +3,152 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- you can remove bulma since you have your own css -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <style>
-    [v-cloak] { display: none; }
+    [v-cloak] { display: none; } /* waits until content loads to display */
   </style>
   <title>Shugo Chara Characters</title>
 </head>
 
 <body>
-  <div id="app" v-cloak>
-    <p>yahaha</p>
-  </div>
+  <main id="app" v-cloak role="main" class="section">
+
+    <!-- the character buttons -->
+    <div class="columns is-centered is-multiline">
+      <div v-for="c of characters" :key="c.name" class="column is-3">
+        <button v-if="!c.locked" @click="showCharacter(c)">
+          <img :src="c.image">
+        </button>
+      </div>
+    </div>
+
+    <!-- the modal -->
+    <div v-if="modalActive" class="modal is-active">
+      <div class="modal-background" @click="closeCharacter"></div>
+      <div class="modal-content box has-background-grey-lighter">
+        <p class="title">{{ selected.name }}</p>
+        <div class="columns">
+          <div class="column is-narrow">
+            <img :src="selected.image">
+            <div>
+              <span
+                v-for="color of selected.colors"
+                :style="{ 'background-color': color }"
+                class="image is-16x16 is-inline-block"
+              >
+              </span>
+            </div>
+          </div>
+          <div class="column">
+            <p><strong>Birthdate:</strong> {{ selected.birth }}</p>
+            <p><strong>Info:</strong> {{ selected.info }}</p>
+            <hr>
+            <p class="subtitle">Charas</p>
+            <div class="box">
+              <p v-for="chara of selected.charas">{{ chara }}</p>
+              <div v-if="selected.html">
+                <p>Extra HTML</p>
+                <div v-html="selected.html"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="modal-close is-large"
+        aria-label="close"
+        @click="closeCharacter">
+      </button>
+    </div>
+
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.min.js"></script>
   <script>
   var app = new Vue({
     el: '#app',
     data: {
+      selected: null,
       characters: [
         {
-          name: "Amu Hinamori",
-          birth: "24 September",
-          info: "Protagonist",
+          name: 'Amu Hinamori',
+          image: 'amu.webp',
+          birth: '24 September',
+          info: 'Cool and Spicy TM. has too many eggs',
           colors: [
-            "pink"
+            '#F0B8D1', '#CE3950'
           ],
           charas: [
-            "Ran",
-            "Miki",
-            "Su",
-            "Dia"
+            'Ran', 'Miki', 'Su', 'Dia'
           ]
-        }
+        },
+        {
+          name: 'Ikuto Tsukiyomi',
+          image: 'ikuto.webp',
+          birth: '1 December',
+          info: 'Nya',
+          colors: [
+            '#A7B1CA', '#60669A', '#565551'
+          ],
+          charas: [
+            'Yoru'
+          ]
+        },
+        {
+          name: 'Tadase Hotori',
+          image: 'tadase.webp',
+          birth: '29 March',
+          info: '"iT\'s AgAiNsT tHe RuLeS"',
+          colors: [
+            '#B8D9F0', '#F8DC9C'
+          ],
+          charas: [
+            'Kiseki'
+          ]
+        },
+        {
+          name: 'Rima Mashiro',
+          image: 'rima.webp',
+          birth: '6 February',
+          info: 'Bala Balance',
+          colors: [
+            '#FFDEAC', ''
+          ],
+          charas: [
+            'Kusukusu'
+          ]
+        },
+        {
+          name: 'Kukai Soma',
+          image: 'kukai.webp',
+          birth: '17 August',
+          info: 'Best boi',
+          colors: [
+            '#B8F0D5', '#AF6C5B'
+          ],
+          charas: [
+            'Daichi'
+          ]
+        },
+        { name: 'Yaya Yuiki', locked: true },
+        { name: 'Nadeshiko Fujisaki', locked: true },
+        { name: 'Kairi Sanjo', locked: true },
       ]
+    },
+    computed: {
+      modalActive() {
+        return this.selected !== null;
+      }
+    },
+    methods: {
+      showCharacter(character) {
+        this.selected = character;
+      },
+      closeCharacter() {
+        this.selected = null;
+      }
     }
   })
   </script>
