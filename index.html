@@ -16,11 +16,13 @@
   <main id="app" v-cloak role="main" class="section">
 
     <!-- the character buttons -->
-    <div class="columns is-centered is-multiline">
-      <div v-for="c of characters" :key="c.name" class="column is-3">
-        <button v-if="!c.locked" @click="showCharacter(c)">
-          <img :src="c.image">
-        </button>
+    <div class="container">
+      <div class="columns is-centered is-multiline has-text-centered">
+        <div v-for="c of characters" :key="c.name" class="column is-3">
+          <button v-if="!c.locked" @click="showCharacter(c)">
+            <img :src="c.image">
+          </button>
+        </div>
       </div>
     </div>
 
